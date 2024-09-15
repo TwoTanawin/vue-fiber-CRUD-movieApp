@@ -1,0 +1,34 @@
+services:
+  go_movie_app_db:
+    image: postgres:latest
+    container_name: go_movie_app_db
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=movie_db   # Automatically creates the movie_db
+    ports:
+      - "5434:5432"
+    networks:
+      - go_movie_app_network
+
+  go_movie_app_pgadmin:
+    image: dpage/pgadmin4
+    container_name: go_movie_app_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "8081:80"
+    depends_on:
+      - go_movie_app_db
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - go_movie_app_network
+
+volumes:
+  pgadmin_data:
+
+networks:
+  go_movie_app_network:
+    external: true

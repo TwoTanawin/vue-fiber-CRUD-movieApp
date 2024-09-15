@@ -1,0 +1,22 @@
+services:
+
+  go_movie_app_backend:
+    image: movie-app-backend
+    container_name: go_movie_app_backend
+    build:
+      context: .
+    environment:
+      - DB_HOST=go_movie_app_db
+      - DB_USER=admin
+      - DB_PASSWORD=password
+      - DB_NAME=movie_db
+      - DB_PORT=5432
+    ports:
+      - "3000:3000"
+    networks:
+      - go_movie_app_network
+
+
+networks:
+  go_movie_app_network:
+    external: true

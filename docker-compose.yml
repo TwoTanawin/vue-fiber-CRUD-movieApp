@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  # Go backend service
+  go_movie_app_backend:
+    build:
+      context: ./movie-app-backend
+      dockerfile: Dockerfile
+    container_name: go_movie_app_backend
+    image: movie-app-backend
+    environment:
+      - DB_HOST=go_movie_app_db
+      - DB_USER=admin
+      - DB_PASSWORD=password
+      - DB_NAME=movie_db
+      - DB_PORT=5432
+    ports:
+      - "3000:3000"
+    networks:
+      - go_movie_app_network
+
+  # Vue.js frontend service
+  movie_app_frontend:
+    build:
+      context: ./movie-app-frontend # path to your frontend folder
+      dockerfile: Dockerfile
+    container_name: movie_app_frontend
+    image: movie-app-frontend
+    ports:
+      - "8080:80"  # Expose frontend on port 8080
+    networks:
+      - go_movie_app_network
+
+networks:
+  go_movie_app_network:
+    external: true
